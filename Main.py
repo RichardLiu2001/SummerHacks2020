@@ -19,7 +19,6 @@ while(capture.isOpened()):
         (x, y, width, height) = cv.boundingRect(contour)
         if cv.contourArea(contour) < np.size(frame1, 0) * np.size(frame1, 1) / 33:
             continue
-        r = r + 50
         moving = moving + 1
         cv.rectangle(frame1, (x, y), (x + width, y + height), (50, 250, 50), 2)
 
@@ -33,5 +32,5 @@ while(capture.isOpened()):
     if cv.waitKey(40) == 27:
         break
 
-cv.destroyWindow()
+cv.destroyAllWindow()
 capture.release()
