@@ -45,8 +45,9 @@ while (capture.isOpened()):
     frame1 = frame2
     ret, frame2 = capture.read()
 
-    if time.time() - lastUpdateTime > 50:
+    if time.time() - lastUpdateTime > 5:
         asyncio.get_event_loop().run_until_complete(send(str(moving)))
+        lastUpdateTime = time.time();
 
     if cv.waitKey(40) == 27:
         break
