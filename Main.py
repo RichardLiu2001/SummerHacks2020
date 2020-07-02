@@ -1,12 +1,27 @@
 import numpy as np
 import cv2 as cv
+import time
+import asyncio
+import websockets
+
+
+async def send(data):
+    url = "ws://localhost:8700"
+    async with websockets.connect(url) as websocket:
+        await(websocket.send(data))
+
+        reply = await websocket.recv()
+        print(reply)
+
 
 capture = cv.VideoCapture(0)
 
 ret, frame1 = capture.read()
 ret, frame2 = capture.read()
 
-while(capture.isOpened()):
+lastUpdateTime = time.time();
+
+while (capture.isOpened()):
     diff = cv.absdiff(frame1, frame2)
     grayscale = cv.cvtColor(diff, cv.COLOR_BGR2GRAY)
     blurred = cv.GaussianBlur(grayscale, (5, 5), 0)
@@ -24,11 +39,15 @@ while(capture.isOpened()):
 
     cv.putText(frame1, "Number: " + str(moving), (10, 10), cv.FONT_HERSHEY_PLAIN, 1, (10, 255, 10), 2)
 
-    #cv.drawContours(frame1, contours, -1, (10, 255, 10), 2)
+    # cv.drawContours(frame1, contours, -1, (10, 255, 10), 2)
 
     cv.imshow("Webcam", frame1)
     frame1 = frame2
     ret, frame2 = capture.read()
+
+    if time.time() - lastUpdateTime > 50:
+        asyncio.get_event_loop().run_until_complete(send(str(moving)))
+
     if cv.waitKey(40) == 27:
         break
 
