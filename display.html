@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Server Count Tester</title>
+</head>
+<body>
+    <h1>Movement Counts</h1>
+    <p>This HTML page lists the number of moving objects that OpenCV counted and reported to the server.</p>
+    <script>
+        var ws = new WebSocket("ws://127.0.0.1:8701/"),
+                messages = document.createElement('ul');
+            ws.onmessage = function (event) {
+                var messages = document.getElementsByTagName('ul')[0],
+                    message = document.createElement('li'),
+                    content = document.createTextNode(event.data + " moving object(s)");
+                message.appendChild(content);
+                messages.appendChild(message);
+            };
+            document.body.appendChild(messages);
+    </script>
+</body>
+</html>
