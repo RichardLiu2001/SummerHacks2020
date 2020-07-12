@@ -1,4 +1,3 @@
-
 # RUN:
 # time python social_distance_people_counter.py --input pedestrians.mp4  --output pedestrianoutput.avi --display 1
 
@@ -15,15 +14,29 @@ import argparse
 import imutils
 import cv2
 import os
+import asyncio
+import websockets
+import time
+
+
+async def send(data):
+    url = "ws://127.0.0.1:8700"
+
+    async with websockets.connect(url) as websocket:
+        await(websocket.send(data))
+
+        reply = await websocket.recv()
+        print(reply)
+
 
 # construct the argument parse and parse the arguments
 ap = argparse.ArgumentParser()
 ap.add_argument("-i", "--input", type=str, default="",
-	help="path to (optional) input video file")
+                help="path to (optional) input video file")
 ap.add_argument("-o", "--output", type=str, default="",
-	help="path to (optional) output video file")
+                help="path to (optional) output video file")
 ap.add_argument("-d", "--display", type=int, default=1,
-	help="whether or not output frame should be displayed")
+                help="whether or not output frame should be displayed")
 args = vars(ap.parse_args())
 
 # load the COCO class labels our YOLO model was trained on
@@ -40,10 +53,10 @@ net = cv2.dnn.readNetFromDarknet(configPath, weightsPath)
 
 # check if we are going to use GPU
 if config.USE_GPU:
-	# set CUDA as the preferable backend and target
-	print("[INFO] setting preferable backend and target to CUDA...")
-	net.setPreferableBackend(cv2.dnn.DNN_BACKEND_CUDA)
-	net.setPreferableTarget(cv2.dnn.DNN_TARGET_CUDA)
+    # set CUDA as the preferable backend and target
+    print("[INFO] setting preferable backend and target to CUDA...")
+    net.setPreferableBackend(cv2.dnn.DNN_BACKEND_CUDA)
+    net.setPreferableTarget(cv2.dnn.DNN_TARGET_CUDA)
 
 # determine only the *output* layer names that we need from YOLO
 ln = net.getLayerNames()
@@ -54,66 +67,70 @@ print("[INFO] accessing video stream...")
 vs = cv2.VideoCapture(args["input"] if args["input"] else 0)
 writer = None
 
-
 count = 0
+lastUpdateTime = time.time()
 # loop over the frames from the video stream
 while True:
-	count += 1
+    count += 1
 
-	# read the next frame from the file
-	(grabbed, frame) = vs.read()
+    # read the next frame from the file
+    (grabbed, frame) = vs.read()
 
-	if count == 15:
-		count = 0
-		# if the frame was not grabbed, then we have reached the end
-		# of the stream
-		if not grabbed:
-			break
+    if count == 15:
+        count = 0
+        # if the frame was not grabbed, then we have reached the end
+        # of the stream
+        if not grabbed:
+            break
 
-		# resize the frame and then detect people (and only people) in it
-		frame = imutils.resize(frame, width=700)
-		results = detect_people(frame, net, ln,
-								personIdx=LABELS.index("person"))
+        # resize the frame and then detect people (and only people) in it
+        frame = imutils.resize(frame, width=700)
+        results = detect_people(frame, net, ln,
+                                personIdx=LABELS.index("person"))
 
-		# loop over the results
-		for (i, (prob, bbox, centroid)) in enumerate(results):
-			# extract the bounding box and centroid coordinates, then
-			# initialize the color of the annotation
-			(startX, startY, endX, endY) = bbox
-			(cX, cY) = centroid
-			color = (0, 255, 0)
+        # loop over the results
+        for (i, (prob, bbox, centroid)) in enumerate(results):
+            # extract the bounding box and centroid coordinates, then
+            # initialize the color of the annotation
+            (startX, startY, endX, endY) = bbox
+            (cX, cY) = centroid
+            color = (0, 255, 0)
 
-			# draw (1) a bounding box around the person and (2) the
-			# centroid coordinates of the person,
-			cv2.rectangle(frame, (startX, startY), (endX, endY), color, 2)
-			cv2.circle(frame, (cX, cY), 5, color, 1)
+            # draw (1) a bounding box around the person and (2) the
+            # centroid coordinates of the person,
+            cv2.rectangle(frame, (startX, startY), (endX, endY), color, 2)
+            cv2.circle(frame, (cX, cY), 5, color, 1)
 
-		# draw the total number of social distancing violations on the
-		# output frame
-		text = "Number of People: {}".format(len(results))
-		cv2.putText(frame, text, (10, frame.shape[0] - 25),
-					cv2.FONT_HERSHEY_SIMPLEX, 0.85, (0, 0, 255), 3)
+        # draw the total number of social distancing violations on the
+        # output frame
+        text = "Number of People: {}".format(len(results))
+        cv2.putText(frame, text, (10, frame.shape[0] - 25),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.85, (0, 0, 255), 3)
 
-		# check to see if the output frame should be displayed to our
-		# screen
-		if args["display"] > 0:
-			# show the output frame
-			cv2.imshow("Frame", frame)
-			key = cv2.waitKey(1) & 0xFF
+        if time.time() - lastUpdateTime > 3:
+            asyncio.get_event_loop().run_until_complete(send(str(len(results))))
+            lastUpdateTime = time.time()
 
-			# if the `q` key was pressed, break from the loop
-			if key == ord("q"):
-				break
+        # check to see if the output frame should be displayed to our
+        # screen
+        if args["display"] > 0:
+            # show the output frame
+            cv2.imshow("Frame", frame)
+            key = cv2.waitKey(1) & 0xFF
 
-		# if an output video file path has been supplied and the video
-		# writer has not been initialized, do so now
-		if args["output"] != "" and writer is None:
-			# initialize our video writer
-			fourcc = cv2.VideoWriter_fourcc(*"MJPG")
-			writer = cv2.VideoWriter(args["output"], fourcc, 25,
-									 (frame.shape[1], frame.shape[0]), True)
+            # if the `q` key was pressed, break from the loop
+            if key == ord("q"):
+                break
 
-		# if the video writer is not None, write the frame to the output
-		# video file
-		if writer is not None:
-			writer.write(frame)
+        # if an output video file path has been supplied and the video
+        # writer has not been initialized, do so now
+        if args["output"] != "" and writer is None:
+            # initialize our video writer
+            fourcc = cv2.VideoWriter_fourcc(*"MJPG")
+            writer = cv2.VideoWriter(args["output"], fourcc, 25,
+                                     (frame.shape[1], frame.shape[0]), True)
+
+        # if the video writer is not None, write the frame to the output
+        # video file
+        if writer is not None:
+            writer.write(frame)
