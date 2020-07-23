@@ -1,6 +1,10 @@
 # SummerHacks2020 People Counter
 
 This project is a program that can count the number of people "entering" and "exiting" on a video feed. The backend uses OpenCV and NodeJS, while the front end is built with React.
+
+![](people_tracker_demo.gif)
+
+
 So far the React part is not linked with the OpenCV backend, but that is coming soon™.
 
 Running run.bat (on windows devices) will open the counter program, a python "server", and a HTML page that displays counts
