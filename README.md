@@ -2,7 +2,7 @@
 
 This project is a program that can count the number of people "entering" and "exiting" on a video feed. The backend uses OpenCV and NodeJS, while the front end is built with React.
 
-![](people_tracker_demo.gif)
+![](demo/people_tracker_demo.gif)
 
 
 So far the React part is not linked with the OpenCV backend, but that is coming soon™.
