@@ -2,6 +2,10 @@
 
 This project is a program that can count the number of people "entering" and "exiting" on a video feed. The backend uses OpenCV and NodeJS, while the front end is built with React.
 
+Here is an example of the people tracker running. 
+
+It updates both the number of people in the frame and the number of people who exit from each side of the frame in real-time. Because people are identified via Convolutional Neural Networks which is computationally expensive, the counter for the number of people is updated every 150 frames, while the number of people exiting each side is updated immediately. 
+
 ![](demo/people_tracker_demo.gif)
 
 
