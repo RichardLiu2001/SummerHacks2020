@@ -1,4 +1,4 @@
-# SummerHacks2020 People Counter
+# Occupansee
 
 This project is a program that can count the number of people "entering" and "exiting" on a video feed. The backend uses OpenCV and NodeJS, while the front end is built with React.
 
