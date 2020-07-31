@@ -12,3 +12,4 @@ people_counter/yolo-coco/coco.names
 people_tracker/yolo-coco/yolov3.weights
 people_tracker/yolo-coco/yolov3.cfg
 people_tracker/yolo-coco/coco.names
+counter_app/occupansee-firebase-adminsdk-cisvj-870d9162db.json
