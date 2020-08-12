@@ -89,9 +89,17 @@ def get_to_send():
             toSend.append(str(random.randint(30, 60)))
     return toSend
 
-toSend = get_to_send()
+for i in range(6):
+    print(get_to_send())
+
+#for i in range(7):
+ #   currentRandom = get_to_send()
+ #   for j in currentRandom:
+   #     toSend.append(j)
+
+#toSend = get_to_send()
 #print(lastweekdata)
-print(toSend)
+#print(toSend)
 
 # As an admin, the app has access to read and write all data, regradless of Security Rules
 
@@ -107,6 +115,14 @@ data = ref.get()
 
 #print('mean of 23:05: ' + str(mean_of_minute(minute_data)))
 #print('mean of 23:00: ' + str(mean_of_hour(hour_data)))
+
+for i in range(6):
+    random_nums = []
+    random_nums.append(0)
+    for j in range(13):
+        random_nums.append(random.randint(30, 60))
+    random_nums.append(0)
+    print(str(random_nums))
 
 
 #print(get_last_week())

@@ -12,7 +12,6 @@ logo {
   height: 30vmin;
   font-family: 'Quicksand', serif;
   font-size: 8vw;
-
 }
 
 
@@ -23,7 +22,11 @@ logo {
   color: white;
 }
 
+.logo-header {
+  margin-bottom: 10vw;
+  background-color: #282c34; 
 
+}
 
 
 canvas{
@@ -32,9 +35,9 @@ canvas{
 
 
 .centered {
-  height: 100vh; /* Magic here */
+  height: 80vh; /* Magic here */
   display: flex;
-  padding: 50px;
+  padding: 200px;
   justify-content: center;
   align-items: center;
 }
@@ -92,6 +95,10 @@ canvas{
 
 .buttonContainer{
   padding: 20px;
+}
+
+.locationButton{
+  padding-bottom: 50px;
 }
 
 
