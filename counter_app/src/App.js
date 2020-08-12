@@ -3,7 +3,7 @@ import './App.css';
 import {Line, Bar} from 'react-chartjs-2'
 import {Doughnut} from 'react-chartjs-2';
 //import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
+//import { makeStyles } from '@material-ui/core/styles';
 //import Box from '@material-ui/core/Box';
 //import Collapse from '@material-ui/core/Collapse';
 ////import IconButton from '@material-ui/core/IconButton';
@@ -15,15 +15,16 @@ import { Navbar, Nav, NavItem, Button} from 'react-bootstrap';
 import {Table, TableBody, TableCell, TableContainer} from 'react-bootstrap/Table';
 import logo from './logo.svg'; // Tell webpack this JS file uses this image
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Dropdown from 'react-bootstrap/Dropdown';
 
 
-const useRowStyles = makeStyles({
-  root: {
-    '& > *': {
-      borderBottom: 'unset',
-    },
-  },
-});
+// const useRowStyles = makeStyles({
+//   root: {
+//     '& > *': {
+//       borderBottom: 'unset',
+//     },
+//   },
+// });
 
 
 function App() {
@@ -179,7 +180,7 @@ class Container extends Component {
     return  (
       <React.Fragment>
        
-        <h1 class="App-logo">
+      <h1 class="App-logo">
         <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Quicksand" />
           Occupansee
         </h1>
@@ -195,15 +196,15 @@ class Container extends Component {
         <h2>Last Week's Data</h2>
 
       <div class ="container">
-      <div class="one">
+      <div>
       {lastWeekBarChart}
         </div>
         
 
-      <div class="two">
+      <div>
         {currentLastWeekDayChart}
       </div>
-
+      
       </div>
 
       
@@ -289,11 +290,20 @@ function createTodayChart(inputData) {
         title:{
           display:true,
           text:"Occupancy for " + nameOfDay,
-          //fontSize:20
+          fontSize:32
         },
         legend:{
+          labels: {fontFamily: 'Quicksand', fontSize: 20},
           display:true,
-          position:'top',
+          position:'top'
+        },
+        scales:{
+          yAxes:[{
+            ticks:{fontFamily: 'Quicksand', fontSize: 28}
+          }],
+          xAxes:[{
+            ticks:{fontFamily: 'Quicksand', fontSize: 28}
+          }]
         },
 
         responsive: true,
@@ -340,13 +350,13 @@ function createTodayChart(inputData) {
     var dayNames = props.state.dayNames
     return (
     <>
-    <Button onClick={() => props.handleClick(0)} variant="outline-primary"> {dayNames[0]}</Button>{' '}
-    <Button onClick={() => props.handleClick(1)} variant="outline-primary">{dayNames[1]}</Button>{' '}
-    <Button onClick={() => props.handleClick(2)} variant="outline-primary">{dayNames[2]}</Button>{' '}
+    <Button onClick={() => props.handleClick(0)} variant="outline-primary"> {dayNames[6]}</Button>{' '}
+    <Button onClick={() => props.handleClick(1)} variant="outline-primary">{dayNames[5]}</Button>{' '}
+    <Button onClick={() => props.handleClick(2)} variant="outline-primary">{dayNames[4]}</Button>{' '}
     <Button onClick={() => props.handleClick(3)} variant="outline-primary">{dayNames[3]}</Button>{' '}
-    <Button onClick={() => props.handleClick(4)} variant="outline-primary">{dayNames[4]}</Button>{' '}
-    <Button onClick={() => props.handleClick(5)} variant="outline-primary">{dayNames[5]}</Button>{' '}
-    <Button onClick={() => props.handleClick(6)} variant="outline-primary">{dayNames[6]}</Button>{' '}
+    <Button onClick={() => props.handleClick(4)} variant="outline-primary">{dayNames[2]}</Button>{' '}
+    <Button onClick={() => props.handleClick(5)} variant="outline-primary">{dayNames[1]}</Button>{' '}
+    <Button onClick={() => props.handleClick(6)} variant="outline-primary">{dayNames[0]}</Button>{' '}
   </>
     )
   }

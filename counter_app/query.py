@@ -3,10 +3,10 @@ import time
 import threading
 #import datetime
 from datetime import date, datetime, timedelta
-import firebase_admin
-from firebase_admin import credentials
-from firebase_admin import db
-from statistics import mean
+#import firebase_admin
+#from firebase_admin import credentials
+#from firebase_admin import db
+#from statistics import mean
 import asyncio
 import datetime
 import random
@@ -17,87 +17,16 @@ import json
 #now = datetime.now()
 
 
-def query(path):
-    return db.reference(path).get()
-
-# Fetch the service account key JSON file contents
-cred = credentials.Certificate('occupansee-firebase-adminsdk-cisvj-870d9162db.json')
-
-# Initialize the app with a service account, granting admin privileges
-firebase_admin.initialize_app(cred, {
-    'databaseURL': 'https://occupansee.firebaseio.com'
-})
 
 
-def get_last_week():
-    result = []
-    for i in range(1, 8):
-        result.append(datetime.datetime.strftime(datetime.datetime.now() - timedelta(i), '%A, %B %-d'))
-    return result;
 
-
-def mean_of_minute(data):
-    return mean(data[k] for k in data)
-
-
-def mean_of_hour(data):
-    sum = 0
-    size = 0
-    for k in data:
-        sum += mean_of_minute(data[k])
-        size += 1
-    return sum / size
-
-
-def mean_of_day(data):
-    sum = 0
-    size = 0
-    for k in data:
-        sum += mean_of_hour(data[k])
-        size += 1
-    return sum / size
-
-
-def get_last_week_data():
-    result = []
-    weekdays = get_last_week()
-    #weekdays = ['July 30, 2020','July 29, 2020', 'July 28, 2020']
-    for weekday in weekdays:
-
-        result.append(weekday)
-        # add data from the week
-        day_data = query(weekday)
-        if day_data is not None:
-            average_of_day = str(round(mean_of_day(day_data), 2))
-            print("Average of day" + str(average_of_day))
-            result.append(average_of_day)
-            for hour_data in day_data:
-                average = str(round(mean_of_hour(day_data[hour_data]) , 2))
-                result.append(average)
-
-    return result
-
-lastweekdata = get_last_week_data()
-
-def get_to_send():
-    toSend = []
-    for weekday in lastweekdata:
-        toSend.append(weekday)
-        toSend.append(str(random.randint(40, 50)))
-
-        for i in range(15):
-            toSend.append(str(random.randint(30, 60)))
-    return toSend
-
-toSend = get_to_send()
+toSend = ['Sunday, August 9', '44', '60', '33', '36', '59', '57', '43', '60', '56', '51', '56', '53', '47', '38', '34', '60', 'Saturday, August 8', '49', '32', '40', '49', '31', '60', '40', '55', '54', '46', '58', '31', '46', '44', '43', '48', 'Friday, August 7', '50', '47', '53', '56', '35', '41', '56', '52', '60', '34', '33', '52', '40', '45', '56', '30', 'Thursday, August 6', '49', '60', '55', '34', '41', '46', '35', '30', '43', '60', '30', '59', '47', '50', '50', '51', 'Wednesday, August 5', '43', '45', '55', '42', '53', '32', '43', '51', '55', '42', '34', '31', '36', '46', '58', '30', 'Tuesday, August 4', '42', '55', '51', '37', '37', '30', '59', '41', '46', '54', '48', '32', '34', '37', '57', '55', 'Monday, August 3', '49', '48', '40', '54', '56', '31', '49', '36', '51', '60', '32', '37', '40', '56', '44', '41']
 #print(lastweekdata)
 print(toSend)
 
 # As an admin, the app has access to read and write all data, regradless of Security Rules
 
 today = date.today()
-ref = db.reference('July 28, 2020/22:00/22:17')
-data = ref.get()
 
 #minute = db.reference('July 28, 2020/23:00/23:05')
 #minute_data = minute.get()

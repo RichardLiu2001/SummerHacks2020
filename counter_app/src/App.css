@@ -5,12 +5,14 @@ logo {
 .App {
   text-align: center;
   font-family: 'Quicksand', serif;
+  background-color: #f5f5dc
 }
 
 .App-logo {
   height: 40vmin;
   font-family: 'Quicksand', serif;
   font-size: 8vw;
+  background-color: #f5f5dc
 
 }
 
@@ -84,16 +86,3 @@ canvas{
   padding: 20px;
 }
 
-.one {
-  width: 50%;
-  height: 200px;
-  float: left;
-  padding: 10px
-}
-
-.two {
-  width: 50%;
-  margin-left: 100%;
-  height: 200px;
-  padding: 10px
-}
