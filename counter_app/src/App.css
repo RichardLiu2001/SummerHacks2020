@@ -2,47 +2,44 @@
 logo {
   font-family: 'Quicksand';
 }
+
 .App {
   text-align: center;
   font-family: 'Quicksand', serif;
-  background-color: #f5f5dc
 }
 
 .App-logo {
-  height: 40vmin;
+  height: 30vmin;
   font-family: 'Quicksand', serif;
   font-size: 8vw;
-  background-color: #f5f5dc
-
 }
 
-/*
+
 .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  background-color: #282c34; 
+  
   font-size: calc(10px + 2vmin);
   color: white;
 }
-*/
 
+.logo-header {
+  margin-bottom: 10vw;
+  background-color: #282c34; 
+
+}
 
 
 canvas{
-
-  width:1200px !important;
-  height:720px !important;
 
 }
 
 
 .centered {
-  height: 100vh; /* Magic here */
+  height: 80vh; /* Magic here */
   display: flex;
+  padding: 200px;
   justify-content: center;
+  text-align: center;
   align-items: center;
 }
 /*
@@ -50,17 +47,14 @@ canvas{
   color: #fff;
   float: right;
 }
-
 .left_half {
   color: #fff;
   float: left;
 }
-
 .leftCanvas {
   float: left;
   width: 50%;
 }
-
 .rightCanvas {
   float: right;
   width: 50%;
@@ -69,20 +63,63 @@ canvas{
 .wrapper {
   display: flex;
 }
-
+h1{
+  text-align: center;
+}
 .left {
-  flex: 0 0 65%;
   width: 50%
 }
 
 .right {
-  flex: 1;
   width: 50%
 }
 
 .container {
-  width: 80%;
-  margin: auto;
+    
+    padding: 20px;
+}
+
+.one {
+  width: 50%;
+  float: left;
+  padding: 30px;
+  padding-bottom: 100px;
+}
+
+.two {
+  width: 50%;
+  float: right;
+  padding: 30px;
+  padding-bottom: 100px;
+}
+
+.buttonContainer{
   padding: 20px;
 }
 
+.locationButton{
+  padding-bottom: 50px;
+}
+
+
+img { 
+  max-width:50%; 
+          height:auto; 
+          width: auto\9;
+          display: block;
+    margin: 0 auto;
+    padding: 20px
+  
+} 
+
+/* background-color: 'rgba(124,178,246)';*/
+
+btn-primary {
+  
+  border-color:'rgba(124,178,246)';
+}
+
+.btn-primary:hover {
+  background-color: 'rgba(124,178,246)'; /* Green */
+  color: white;
+}
