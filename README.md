@@ -13,5 +13,7 @@ Because people are identified using a YOLO-based Convolutional Neural Network wh
 The Python and OpenCV backend is connected to the React frontend via Websockets. 
 When generating data, the backend also posts the data to a Firebase Realtime Database, where the data will be queried later and used to display graphs of statistics of the last 7 days on the frontend.
 
+You can visit the demo website at https://occupansee.web.app/
+
 You will probably need [Yarn](https://yarnpkg.com/) to run the new frontend.
 
