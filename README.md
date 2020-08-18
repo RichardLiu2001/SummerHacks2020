@@ -4,6 +4,10 @@ This project is a program that can count the number of people "entering" and "ex
 
 View the demo video here: https://www.youtube.com/watch?v=x7GwwBdKOxU
 
+![](demo/daily)
+![](demo/weekly)
+![](demo/Bar)
+
 Both the number of people in the frame and the number of people who exit from each side of the frame are updated in real-time. 
 
 Because people are identified using a YOLO-based Convolutional Neural Network which is computationally expensive, the counter for the number of people is updated every 150 frames, while the number of people exiting each side is updated immediately. 
