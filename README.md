@@ -1,23 +1,34 @@
 ![Occupansee](demo/header.png)
 
-This project is a program that can count the number of people "entering" and "exiting" on a video feed. The backend uses OpenCV and Python, while the front end is built with React and Chart.js.
+# Occupansee
 
-View the demo video here: https://www.youtube.com/watch?v=x7GwwBdKOxU
+**Occupansee** is a program that can count the number of people "entering" and "exiting" on a video feed. The current occupancy and other related statistics are displayed on this [website](https://occupansee.web.app/) in real-time.
+
+[demo video](https://www.youtube.com/watch?v=x7GwwBdKOxU)
+
+## Occupancy Calculation 
+The occupancy of a building can be calculated in two different ways depending on the size of the building. First, people (or object) detection is performed using the YOLO convolutional neural network algorithm trained on the CoCo dataset. In addition, OpenCV is used for general video processing and computer vision related tasks. 
+
+### Small Buildings
+If the building is small enough where the camera can capture the entire building or location of interest, then the occupancy is simply the number of people detected. 
+
+### Large Buildings
+If the building is large, the video feed should be from a camera positioned at the entrance of the building. Then, in addition to detecting people, Occupansee tracks the people’s movements to determine which direction they are moving in and which side of the frame they exit from. The user will configure which side of the frame will be considered the “entrance” and which will be considered the “exit”, and the occupancy is calculated by taking the difference between people entering and exiting. 
+
+![](demo/people_tracker_demo.gif)
+
+Because people are identified using a YOLO-based Convolutional Neural Network which is computationally expensive, the counter for the number of people is updated every 150 frames, while the number of people exiting each side is updated immediately.
+
+## Database 
+The data is sent to a [Firebase Realtime Database](https://firebase.google.com/docs/database), where it is stored in a nosql format. The keys correspond to when the data was collected, allowing for specific and efficient data retrieval. This will simplify the process of calculating statistics from a specific time frame, such as the previous hour, day, or week.
+
+## Websockets
+Once per day, data is queried, statistics are calculated, and both are send to the front end using [websockets](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API). In addition, when the data is generated in real-time, it is also sent to the front end using another websocket (as well as to the database). 
+
+## Front End
+The front end was created using [React.js](https://reactjs.org/) and [Chart.js](https://www.chartjs.org/). It displays data for several different locations, including the real-time daily charts, averages of the last week, and the daily charts for the last seven days, all for each location. Thus, changing the location will update all of the graphs on the page to correspond with the newly selected location. 
 
 ![](demo/daily.png)
 ![](demo/weekly.png)
 ![](demo/Bar.png)
-
-Both the number of people in the frame and the number of people who exit from each side of the frame are updated in real-time. 
-
-Because people are identified using a YOLO-based Convolutional Neural Network which is computationally expensive, the counter for the number of people is updated every 150 frames, while the number of people exiting each side is updated immediately. 
-
-![](demo/people_tracker_demo.gif)
-
-The Python and OpenCV backend is connected to the React frontend via Websockets. 
-When generating data, the backend also posts the data to a Firebase Realtime Database, where the data will be queried later and used to display graphs of statistics of the last 7 days on the frontend.
-
-You can visit the demo website at https://occupansee.web.app/
-
-You will probably need [Yarn](https://yarnpkg.com/) to run the new frontend.
 
