@@ -1,10 +1,10 @@
-[](demo/header.png)
+![](demo/header.png)
 
 This project is a program that can count the number of people "entering" and "exiting" on a video feed. The backend uses OpenCV and Python, while the front end is built with React and Chart.js.
 
 View the demo video here: https://www.youtube.com/watch?v=x7GwwBdKOxU
 
-[](demo/daily)
+![](demo/daily)
 ![](demo/weekly)
 ![](demo/Bar)
 
