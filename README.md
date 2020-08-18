@@ -2,12 +2,12 @@
 
 # Occupansee
 
-**Occupansee** is a program that can count the number of people "entering" and "exiting" on a video feed. The current occupancy and other related statistics are displayed on this [website](https://occupansee.web.app/) in real-time.
+**Occupansee** is a program that can calculate the number of people inside of a building given a video feed, usually from a security camera. The current occupancy and other related statistics are displayed on this [website](https://occupansee.web.app/) in real-time.
 
-[demo video](https://www.youtube.com/watch?v=x7GwwBdKOxU)
+[View the demo video](https://www.youtube.com/watch?v=x7GwwBdKOxU)
 
 ## Occupancy Calculation 
-The occupancy of a building can be calculated in two different ways depending on the size of the building. First, people (or object) detection is performed using the YOLO convolutional neural network algorithm trained on the CoCo dataset. In addition, OpenCV is used for general video processing and computer vision related tasks. 
+The occupancy of a building can be calculated in two different ways depending on the size of the building. First, people (or object) detection is performed using the [YOLO](https://pjreddie.com/darknet/yolo/) convolutional neural network algorithm trained on the [CoCo](https://cocodataset.org/#home) dataset. Note that the weights from the YOLO algorithm are not included because of their large file sizes, but can be found here In addition, [OpenCV](https://opencv.org/) is used for general video processing and computer vision related tasks. 
 
 ### Small Buildings
 If the building is small enough where the camera can capture the entire building or location of interest, then the occupancy is simply the number of people detected. 
