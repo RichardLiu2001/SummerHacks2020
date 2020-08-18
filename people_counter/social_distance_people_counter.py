@@ -1,5 +1,5 @@
 # RUN:
-# time python social_distance_people_counter.py --input pedestrians.mp4  --output pedestrianoutput.avi --display 1
+# time python social_distance_people_counter.py --input mall.mp4  --output mall_output.avi --display 1
 
 # USAGE
 # python social_distance_detector.py --input pedestrians.mp4
@@ -15,18 +15,21 @@ import imutils
 import cv2
 import os
 import asyncio
-import websockets
+#import websockets
 import time
 
 
-async def send(data):
-    url = "ws://127.0.0.1:8700"
 
-    async with websockets.connect(url) as websocket:
-        await(websocket.send(data))
 
-        reply = await websocket.recv()
-        print(reply)
+
+#async def send(data):
+   # url = "ws://127.0.0.1:8700"
+
+    #async with websockets.connect(url) as websocket:
+    #    await(websocket.send(data))
+
+     #   reply = await websocket.recv()
+     #   print(reply)
 
 
 # construct the argument parse and parse the arguments
@@ -84,6 +87,7 @@ while True:
             break
 
         # resize the frame and then detect people (and only people) in it
+        # change "person" to another object (car) to detect other types of objects
         frame = imutils.resize(frame, width=700)
         results = detect_people(frame, net, ln,
                                 personIdx=LABELS.index("person"))
@@ -98,8 +102,9 @@ while True:
 
             # draw (1) a bounding box around the person and (2) the
             # centroid coordinates of the person,
-            cv2.rectangle(frame, (startX, startY), (endX, endY), color, 2)
-            cv2.circle(frame, (cX, cY), 5, color, 1)
+            if (endX - startX) < 500:
+               # cv2.rectangle(frame, (startX, startY), (endX, endY), color, 2)
+                cv2.circle(frame, (cX, cY), 0, color, 5)
 
         # draw the total number of social distancing violations on the
         # output frame
@@ -107,9 +112,9 @@ while True:
         cv2.putText(frame, text, (10, frame.shape[0] - 25),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.85, (0, 0, 255), 3)
 
-        if time.time() - lastUpdateTime > 3:
-            asyncio.get_event_loop().run_until_complete(send(str(len(results))))
-            lastUpdateTime = time.time()
+       # if time.time() - lastUpdateTime > 3:
+       #     asyncio.get_event_loop().run_until_complete(send(str(len(results))))
+        #    lastUpdateTime = time.time()
 
         # check to see if the output frame should be displayed to our
         # screen

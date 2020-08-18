@@ -1,13 +1,14 @@
 # USAGE
 
 # RUN:
-# python3 people_counter_direction.py --input videos/pedestrians.mp4  --output output/pedestrians_output_KCF.avi --display 1
+# python people_counter_direction.py --input videos/highway.mp4  --output output/highway_output_dlib.avi --display 1
 
 # https://www.pyimagesearch.com/2018/08/13/opencv-people-counter/
 # https://www.pyimagesearch.com/2020/06/01/opencv-social-distancing-detector/
 
 # import the necessary packages
 from pyimagesearch.richardTracker import richardTrackableObject
+from pyimagesearch.richardTrackerDlib import richardTrackableObjectDlib
 from imutils.video import VideoStream
 from imutils.video import FPS
 
@@ -22,6 +23,7 @@ import argparse
 import imutils
 import cv2
 import os
+import dlib
 
 
 def get_closest_side(centroid, W, H):
@@ -96,7 +98,7 @@ ap.add_argument("-o", "--output", type=str, default="",
 	help="path to (optional) output video file")
 ap.add_argument("-d", "--display", type=int, default=1,
 	help="whether or not output frame should be displayed")
-ap.add_argument("-s", "--skip-frames", type=int, default=45,
+ap.add_argument("-s", "--skip-frames", type=int, default=100,
 	help="# of skip frames between detections")
 args = vars(ap.parse_args())
 
@@ -198,7 +200,7 @@ while True:
 		# convert the frame to a blob and pass the blob through the
 		# network and obtain the detections
 		results = detect_people(frame, net, ln,
-								personIdx=LABELS.index("person"))
+								personIdx=LABELS.index("car"))
 
 		# loop over the detections
 		id = 1
@@ -208,11 +210,11 @@ while True:
 				#if not is_close_to_edge(centroid, W, H):
 				#	continue
 
-				tracker = get_tracker(use_dlib=False, bbox=bbox, input_frame=frame, tracker_type="kcf")
-				#tracker = get_tracker(use_dlib=True, bbox=bbox, input_frame=rgb, tracker_type="")
+				#tracker = get_tracker(use_dlib=False, bbox=bbox, input_frame=frame, tracker_type="kcf")
+				tracker = get_tracker(use_dlib=True, bbox=bbox, input_frame=rgb, tracker_type="")
 				# add the tracker to our list of trackers so we can
 				# utilize it during skip frames
-				richardTrackers[id] = richardTrackableObject(bbox, tracker, id)
+				richardTrackers[id] = richardTrackableObjectDlib(bbox, tracker, id)
 
 				id += 1
 
@@ -241,7 +243,7 @@ while True:
 
 			id = richardTracker.get_id()
 			bbox = richardTracker.get_bbox()
-			cv2.rectangle(frame, (bbox[0], bbox[1]), (bbox[2], bbox[3]), (0, 255, 0), 2)
+			#cv2.rectangle(frame, (bbox[0], bbox[1]), (bbox[2], bbox[3]), (0, 255, 0), 2)
 			# if the bounding box is outside of the frame
 			if bbox[0] < 0 or bbox[2] > W or bbox[1] < 0 or bbox[3] > H:
 
@@ -272,8 +274,8 @@ while True:
 			text = "ID {}".format(richardTracker.get_id())
 			textX = max(0, int(currentCentroid[0]) - 10)
 			textY = max(0, int(currentCentroid[1]) - 10)
-			cv2.putText(frame, text, (textX, textY),
-						cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+			#cv2.putText(frame, text, (textX, textY),
+				#		cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
 
 	# construct a tuple of information we will be displaying on the
 	# frame
@@ -289,8 +291,8 @@ while True:
 				text = "{}: {}".format(k, v)
 				cv2.putText(frame, text, (10, H - ((i * 20) + 20)),
 							cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
-	cv2.line(frame, (0, 0), (W, H), (0, 255, 255), 2)
-	cv2.line(frame, (0, H), (W, 0), (0, 255, 255), 2)
+	#cv2.line(frame, (0, 0), (W, H), (0, 255, 255), 2)
+	#cv2.line(frame, (0, H), (W, 0), (0, 255, 255), 2)
 
 	# check to see if we should write the frame to disk
 	if writer is not None:
