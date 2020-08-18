@@ -2,7 +2,7 @@
 
 This project is a program that can count the number of people "entering" and "exiting" on a video feed. The backend uses OpenCV and Python, while the front end is built with React and Chart.js.
 
-https://www.youtube.com/watch?v=x7GwwBdKOxU
+View the demo video here: https://www.youtube.com/watch?v=x7GwwBdKOxU
 
 Both the number of people in the frame and the number of people who exit from each side of the frame are updated in real-time. 
 
