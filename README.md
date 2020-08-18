@@ -1,4 +1,4 @@
-![](demo/header.png)
+![Occupansee](demo/header.png)
 
 This project is a program that can count the number of people "entering" and "exiting" on a video feed. The backend uses OpenCV and Python, while the front end is built with React and Chart.js.
 
