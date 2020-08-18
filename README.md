@@ -4,9 +4,9 @@ This project is a program that can count the number of people "entering" and "ex
 
 View the demo video here: https://www.youtube.com/watch?v=x7GwwBdKOxU
 
-![](demo/daily)
-![](demo/weekly)
-![](demo/Bar)
+![](demo/daily.png)
+![](demo/weekly.png)
+![](demo/Bar.png)
 
 Both the number of people in the frame and the number of people who exit from each side of the frame are updated in real-time. 
 
